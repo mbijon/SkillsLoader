@@ -1,0 +1,19 @@
+# Built Visual Studio Code Extensions
+*.vsix
+
+# Dependencies
+/node_modules/
+
+# Build artifacts
+/out/
+/dist/
+
+# Local .vscode-test folder for extension testing
+/.vscode-test/
+
+# VS Code workspace files
+*.code-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
