@@ -1,0 +1,85 @@
+{
+  "name": "skills-importer",
+  "displayName": "Skills Importer",
+  "description": "Install Agent Skills from a GitHub library into .github/skills of your workspace.",
+  "version": "0.0.1",
+  "publisher": "local-dev",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:skillsImporter.installFromLibrary",
+    "onCommand:skillsImporter.updateInstalledSkills",
+    "onCommand:skillsImporter.removeInstalledSkill"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "skillsImporter.installFromLibrary",
+        "title": "Skills: Install from Library…"
+      },
+      {
+        "command": "skillsImporter.updateInstalledSkills",
+        "title": "Skills: Update Installed Skills…"
+      },
+      {
+        "command": "skillsImporter.removeInstalledSkill",
+        "title": "Skills: Remove Installed Skill…"
+      }
+    ],
+    "configuration": {
+      "title": "Skills Importer",
+      "properties": {
+        "skillsImporter.library": {
+          "type": "string",
+          "default": "anthropics/skills",
+          "description": "GitHub repository in the form 'owner/repo' that contains skills."
+        },
+        "skillsImporter.ref": {
+          "type": "string",
+          "default": "main",
+          "description": "Git reference (branch, tag, or commit SHA) to fetch from the skills library repo."
+        },
+        "skillsImporter.path": {
+          "type": "string",
+          "default": "skills",
+          "description": "Path inside the repo under which skills are stored (for anthropics/skills this is 'skills')."
+        },
+        "skillsImporter.cache.ttlHours": {
+          "type": "number",
+          "default": 24,
+          "minimum": 0,
+          "description": "How long to cache the downloaded skills library (in hours). Use 0 to disable caching."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "node ./node_modules/typescript/bin/tsc -p ./",
+    "watch": "node ./node_modules/typescript/bin/tsc --watch -p ./",
+    "lint": "node ./node_modules/eslint/bin/eslint.js .",
+    "package": "node ./node_modules/@vscode/vsce/vsce package",
+    "test": "npm run compile && node ./out/test/runTest.js"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "tar": "^7.5.0"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.30",
+    "@types/vscode": "^1.90.0",
+    "@typescript-eslint/eslint-plugin": "^7.7.0",
+    "@typescript-eslint/parser": "^7.7.0",
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.7.1",
+    "eslint": "^8.57.0",
+    "mocha": "^10.4.0",
+    "typescript": "^5.6.3"
+  }
+}

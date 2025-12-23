@@ -8,7 +8,11 @@
 /out/
 /dist/
 
+# Test output
+/coverage/
+
 # Local .vscode-test folder for extension testing
+/.vscode/
 /.vscode-test/
 
 # VS Code workspace files
