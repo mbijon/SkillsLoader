@@ -217,13 +217,17 @@
     "lint": "node ./node_modules/eslint/bin/eslint.js . --ext .ts",
     "lint:fix": "node ./node_modules/eslint/bin/eslint.js . --ext .ts --fix",
     "package": "node ./node_modules/@vscode/vsce/vsce package",
-    "test": "npm run compile && node ./out/test/runTest.js"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:e2e": "npm run compile && node ./out/test/runTest.js"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
     "tar": "^7.5.0"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.30",
     "@types/vscode": "^1.90.0",
@@ -232,7 +236,9 @@
     "@vscode/test-electron": "^2.4.1",
     "@vscode/vsce": "^3.7.1",
     "eslint": "^8.57.0",
+    "jest": "^30.2.0",
     "mocha": "^10.4.0",
+    "ts-jest": "^29.4.6",
     "typescript": "^5.6.3"
   }
 }

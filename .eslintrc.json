@@ -27,6 +27,19 @@
     "out",
     "dist",
     "node_modules",
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "jest.config.js",
+    "coverage"
+  ],
+  "overrides": [
+    {
+      "files": ["**/__tests__/**/*.ts", "**/*.test.ts"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "@typescript-eslint/no-explicit-any": "off"
+      }
+    }
   ]
 }
