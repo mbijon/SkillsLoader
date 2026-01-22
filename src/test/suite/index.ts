@@ -1,6 +1,5 @@
 import * as path from 'path';
-
-import * as Mocha from 'mocha';
+import Mocha from 'mocha';
 
 export function run(): Promise<void> {
   const mocha = new Mocha({
@@ -12,7 +11,7 @@ export function run(): Promise<void> {
   mocha.addFile(path.resolve(testsRoot, 'extension.test'));
 
   return new Promise((resolve, reject) => {
-    mocha.run((failures) => {
+    mocha.run((failures: number) => {
       if (failures > 0) {
         reject(new Error(`${failures} tests failed.`));
       } else {

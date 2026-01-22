@@ -2,7 +2,7 @@
   "name": "skills-importer",
   "displayName": "Skills Importer",
   "description": "Install Agent Skills from a GitHub library into .github/skills of your workspace.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "publisher": "local-dev",
   "engines": {
     "vscode": "^1.90.0"
@@ -10,50 +10,202 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:skillsImporter.installFromLibrary",
-    "onCommand:skillsImporter.updateInstalledSkills",
-    "onCommand:skillsImporter.removeInstalledSkill"
+  "keywords": [
+    "skills",
+    "agent",
+    "github",
+    "import",
+    "claude"
   ],
+  "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "skillsImporter.installFromLibrary",
-        "title": "Skills: Install from Library…"
+        "title": "Skills: Install from Library...",
+        "icon": "$(add)"
       },
       {
         "command": "skillsImporter.updateInstalledSkills",
-        "title": "Skills: Update Installed Skills…"
+        "title": "Skills: Update Installed Skills...",
+        "icon": "$(sync)"
       },
       {
         "command": "skillsImporter.removeInstalledSkill",
-        "title": "Skills: Remove Installed Skill…"
+        "title": "Skills: Remove Installed Skill...",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "skillsImporter.refreshCache",
+        "title": "Skills: Refresh Library Cache",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "skillsImporter.clearCache",
+        "title": "Skills: Clear All Cache"
+      },
+      {
+        "command": "skillsImporter.signIn",
+        "title": "Skills: Sign in to GitHub",
+        "icon": "$(github)"
+      },
+      {
+        "command": "skillsImporter.signOut",
+        "title": "Skills: Sign Out of GitHub"
+      },
+      {
+        "command": "skillsImporter.openSettings",
+        "title": "Skills: Open Settings",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "skillsImporter.showQuickActions",
+        "title": "Skills: Quick Actions"
+      },
+      {
+        "command": "skillsImporter.refreshTree",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "skillsImporter.removeSkillFromTree",
+        "title": "Remove Skill",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "skillsImporter.openInExplorer",
+        "title": "Reveal in Explorer",
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "skillsImporter.openSkillMarkdown",
+        "title": "Open SKILL.md",
+        "icon": "$(markdown)"
+      },
+      {
+        "command": "skillsImporter.copySkillPath",
+        "title": "Copy Path",
+        "icon": "$(copy)"
       }
     ],
+    "views": {
+      "explorer": [
+        {
+          "id": "skillsImporter.installedSkills",
+          "name": "Installed Skills",
+          "contextualTitle": "Skills Importer",
+          "icon": "$(symbol-method)",
+          "visibility": "collapsed"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "skillsImporter.installedSkills",
+        "contents": "No skills installed yet.\n[Install from Library](command:skillsImporter.installFromLibrary)\n\nYou can also configure a custom skills library in settings.\n[Open Settings](command:skillsImporter.openSettings)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "skillsImporter.installFromLibrary",
+          "when": "view == skillsImporter.installedSkills",
+          "group": "navigation@1"
+        },
+        {
+          "command": "skillsImporter.refreshTree",
+          "when": "view == skillsImporter.installedSkills",
+          "group": "navigation@2"
+        },
+        {
+          "command": "skillsImporter.refreshCache",
+          "when": "view == skillsImporter.installedSkills",
+          "group": "overflow@1"
+        },
+        {
+          "command": "skillsImporter.signIn",
+          "when": "view == skillsImporter.installedSkills",
+          "group": "overflow@2"
+        },
+        {
+          "command": "skillsImporter.openSettings",
+          "when": "view == skillsImporter.installedSkills",
+          "group": "overflow@3"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "skillsImporter.openSkillMarkdown",
+          "when": "view == skillsImporter.installedSkills && viewItem == skill",
+          "group": "inline@1"
+        },
+        {
+          "command": "skillsImporter.openInExplorer",
+          "when": "view == skillsImporter.installedSkills && viewItem == skill",
+          "group": "navigation@1"
+        },
+        {
+          "command": "skillsImporter.copySkillPath",
+          "when": "view == skillsImporter.installedSkills && viewItem == skill",
+          "group": "navigation@2"
+        },
+        {
+          "command": "skillsImporter.removeSkillFromTree",
+          "when": "view == skillsImporter.installedSkills && viewItem == skill",
+          "group": "modification@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "skillsImporter.refreshTree",
+          "when": "false"
+        },
+        {
+          "command": "skillsImporter.removeSkillFromTree",
+          "when": "false"
+        },
+        {
+          "command": "skillsImporter.openInExplorer",
+          "when": "false"
+        },
+        {
+          "command": "skillsImporter.openSkillMarkdown",
+          "when": "false"
+        },
+        {
+          "command": "skillsImporter.copySkillPath",
+          "when": "false"
+        }
+      ]
+    },
     "configuration": {
       "title": "Skills Importer",
       "properties": {
         "skillsImporter.library": {
           "type": "string",
           "default": "anthropics/skills",
-          "description": "GitHub repository in the form 'owner/repo' that contains skills."
+          "description": "GitHub repository in the form 'owner/repo' that contains skills.",
+          "order": 1
         },
         "skillsImporter.ref": {
           "type": "string",
           "default": "main",
-          "description": "Git reference (branch, tag, or commit SHA) to fetch from the skills library repo."
+          "description": "Git reference (branch, tag, or commit SHA) to fetch from the skills library repo.",
+          "order": 2
         },
         "skillsImporter.path": {
           "type": "string",
           "default": "skills",
-          "description": "Path inside the repo under which skills are stored (for anthropics/skills this is 'skills')."
+          "description": "Path inside the repo under which skills are stored.",
+          "order": 3
         },
         "skillsImporter.cache.ttlHours": {
           "type": "number",
           "default": 24,
           "minimum": 0,
-          "description": "How long to cache the downloaded skills library (in hours). Use 0 to disable caching."
+          "description": "How long to cache the downloaded skills library (in hours). Use 0 to disable caching.",
+          "order": 4
         }
       }
     }
@@ -62,7 +214,8 @@
     "vscode:prepublish": "npm run compile",
     "compile": "node ./node_modules/typescript/bin/tsc -p ./",
     "watch": "node ./node_modules/typescript/bin/tsc --watch -p ./",
-    "lint": "node ./node_modules/eslint/bin/eslint.js .",
+    "lint": "node ./node_modules/eslint/bin/eslint.js . --ext .ts",
+    "lint:fix": "node ./node_modules/eslint/bin/eslint.js . --ext .ts --fix",
     "package": "node ./node_modules/@vscode/vsce/vsce package",
     "test": "npm run compile && node ./out/test/runTest.js"
   },

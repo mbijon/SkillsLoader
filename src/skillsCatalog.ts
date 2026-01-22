@@ -98,8 +98,9 @@ export async function loadSkillsFromRepo(repoRoot: string, skillsRootRelPath: st
       continue;
     }
 
-    const name = (parsed.data as any)?.name;
-    const description = (parsed.data as any)?.description;
+    const data = parsed.data as Record<string, unknown>;
+    const name = data?.name;
+    const description = data?.description;
 
     if (!isNonEmptyString(name) || !isNonEmptyString(description)) {
       continue;
