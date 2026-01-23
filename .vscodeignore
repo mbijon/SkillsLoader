@@ -1,0 +1,7 @@
+src/**
+**/*.ts
+tsconfig.json
+.vscode/**
+.github/**
+.git/**
+.DS_Store
